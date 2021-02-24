@@ -450,6 +450,29 @@ class MPCTensor(CrypTensor):
             return -result[0], result[1]
 
     @mode(Ptype.arithmetic)
+    def max_pool1d(self, kernel_size, padding=None, stride=None, return_indices=False):
+        max_input = self.shallow_copy()
+        max_input.share, output_size = pool_reshape1d(
+            self.share,
+            kernel_size,
+            padding=padding,
+            stride=stride,
+            # padding with extremely negative values to avoid choosing pads
+            # -2 ** 40 is acceptable since it is lower than the supported range
+            # which is -2 ** 32 because multiplication can otherwise fail.
+            pad_value=(-2 ** 40),
+        )
+        max_vals, argmax_vals = max_input.max(dim=-1, one_hot=True)
+        max_vals = max_vals.view(output_size)
+        if return_indices:
+            if isinstance(kernel_size, int):
+                kernel_size = (kernel_size, kernel_size)
+            argmax_vals = argmax_vals.view(output_size + kernel_size)
+            return max_vals, argmax_vals
+        return max_vals
+
+
+    @mode(Ptype.arithmetic)
     def max_pool2d(self, kernel_size, padding=None, stride=None, return_indices=False):
         """Applies a 2D max pooling over an input signal composed of several
         input planes.
