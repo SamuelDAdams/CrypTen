@@ -36,15 +36,30 @@ def pool_reshape1d(input, kernel_size, padding=None, stride=None, pad_value=0):
     assert isinstance(pad_value, int), "pad_value must be an integer"
     assert input.dim() == 3, "pool input must be a 3-d tensor"
 
+    # Apply padding if necessary
+    if padding is not None and padding > 0:
+        assert isinstance(padding, int), "Padding must be an int or None"
+        input = torch.nn.functional.pad(input, padding, value=pad_value)
+
     n = input.size(0)
     c = input.size(1)
     l = input.size(2)
-    l_out = (l + 2 * padding * (k - 1) - 1) // s + 1
-    #l_out = (l - k) // s + 1
+    #l_out = (l - k - 1) // s + 1
+    l_out = (l - k) // s + 1
     output_size = (n, c, l_out)
 
     kernel_indices = torch.tensor(range(k))
-    kernel_indices = torch.cat([kernel_indices + i * s for i in range(l_out)])
+    kernel_indices = torch.stack([kernel_indices + i * s for i in range(l_out)])
+
+    offset = input.size(2)
+    kernel_indices = torch.stack(
+        [kernel_indices + i * offset for i in range(input.size(1))]
+    )
+
+    offset *= input.size(1)
+    kernel_indices = torch.stack(
+        [kernel_indices + i * offset for i in range(input.size(0))]
+    )
 
     input = input.take(kernel_indices)
 

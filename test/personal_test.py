@@ -31,10 +31,12 @@ def test_mp1d():
     x_small = torch.rand(10, 3, 28)
 
     print(x_small)
-
+    mp = torch.nn.MaxPool1d(2, return_indices=True)
+    res, ind = mp(x_small)
     input = AutogradCrypTensor(crypten.cryptensor(x_small))
-    outputs = [None]
-    outputs[0] = input.max_pool1d(2, return_indices=False)
+    outputs = input.max_pool1d(2, return_indices=True)
+    out = outputs[0].get_plain_text()
+    assert torch.all(torch.eq(out, res))
     #outputs[0] = input.max_pool2d(2, return_indices=False)
 
 crypten.init()
