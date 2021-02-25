@@ -26,6 +26,27 @@ def count_wraps(share_list):
         prev = next
     return result
 
+def pool_reshape1d(input, kernel_size, padding=None, stride=None, pad_value=0):
+    k = kernel_size
+    s = stride
+    if stride is None:
+        s = k
+    assert isinstance(k, int), "kernel_size must be an int"
+    assert isinstance(s, int), "stride must be and int or None"
+    assert isinstance(pad_value, int), "pad_value must be an integer"
+    assert input.dim() == 3, "pool input must be a 3-d tensor"
+
+    n = input.size(0)
+    c = input.size(1)
+    l = input.size(2)
+    l_out = (l + 2 * padding * (k - 1) - 1) // s + 1
+    output_size = (n, c, l_out)
+
+    kernel_indices = torch.tensor(range(k))
+    kernel_indices = torch.cat([kernel_indices + i * s for i in range(l_out)])
+
+    return input, output_size
+    
 
 def pool_reshape(input, kernel_size, padding=None, stride=None, pad_value=0):
     """Rearrange a 4-d tensor so that each kernel is represented by each row"""
@@ -52,7 +73,6 @@ def pool_reshape(input, kernel_size, padding=None, stride=None, pad_value=0):
     if padding is not None:
         padding = (padding, padding) if isinstance(padding, int) else padding
         assert len(padding) == 2, "Padding must be an integer or a pair"
-        padding = (padding[0], padding[0], padding[1], padding[1])
         input = torch.nn.functional.pad(input, padding, value=pad_value)
 
     # Compute output size based on parameters
