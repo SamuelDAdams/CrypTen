@@ -40,10 +40,13 @@ def pool_reshape1d(input, kernel_size, padding=None, stride=None, pad_value=0):
     c = input.size(1)
     l = input.size(2)
     l_out = (l + 2 * padding * (k - 1) - 1) // s + 1
+    #l_out = (l - k) // s + 1
     output_size = (n, c, l_out)
 
     kernel_indices = torch.tensor(range(k))
     kernel_indices = torch.cat([kernel_indices + i * s for i in range(l_out)])
+
+    input = input.take(kernel_indices)
 
     return input, output_size
     

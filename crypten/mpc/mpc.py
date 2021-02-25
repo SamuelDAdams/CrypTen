@@ -11,6 +11,7 @@ from functools import wraps
 import crypten
 import torch
 from crypten.common.util import pool_reshape
+from crypten.common.util import pool_reshape1d
 
 from ..autograd_cryptensor import AutogradCrypTensor
 from ..cryptensor import CrypTensor
@@ -462,7 +463,9 @@ class MPCTensor(CrypTensor):
             # which is -2 ** 32 because multiplication can otherwise fail.
             pad_value=(-2 ** 40),
         )
+        #print(max_input.share)
         max_vals, argmax_vals = max_input.max(dim=-1, one_hot=True)
+        print(max_vals.get_plain_text())
         max_vals = max_vals.view(output_size)
         if return_indices:
             if isinstance(kernel_size, int):
@@ -489,7 +492,9 @@ class MPCTensor(CrypTensor):
             pad_value=(-2 ** 40),
         )
         max_vals, argmax_vals = max_input.max(dim=-1, one_hot=True)
+        print(max_vals.get_plain_text())
         max_vals = max_vals.view(output_size)
+        print(max_vals.get_plain_text())
         if return_indices:
             if isinstance(kernel_size, int):
                 kernel_size = (kernel_size, kernel_size)
