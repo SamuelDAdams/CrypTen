@@ -877,6 +877,65 @@ class Linear(Module):
         return module
 
 
+class Conv1d(Module):
+
+    def __init__(
+        self, in_channels, out_channels, kernel_size, stride=1, padding=0, bias=True
+    ):
+
+        # check inputs:
+        super().__init__()
+
+        # initialize model parameters:
+        pytorch_module = torch.nn.Conv1d(
+            in_channels,
+            out_channels,
+            kernel_size,
+            stride=stride,
+            padding=padding,
+            bias=bias,
+        )
+        self.register_parameter("weight", pytorch_module.weight)
+        if bias:
+            self.register_parameter("bias", pytorch_module.bias)
+
+        # set other instance fields:
+        self.stride = stride
+        self.padding = padding
+
+    def forward(self, x):
+        x = x.conv1d(self.weight, stride=self.stride, padding=self.padding)
+        if hasattr(self, "bias"):
+            x = x.add(self.bias.unsqueeze(-1).unsqueeze(-1))  # unsure
+        return x
+
+    @staticmethod
+    def from_onnx(parameters=None, attributes=None):
+
+        # check parameters and attributes:
+        if parameters is None:
+            parameters = {}
+        if attributes is None:
+            attributes = {}
+
+        # initialize module:
+        in_channels = parameters["weight"].size(1)
+        out_channels = parameters["weight"].size(0)
+        module = Conv1d(
+            in_channels,
+            out_channels,
+            attributes["kernel_shape"],
+            stride=attributes["stride"],
+            padding=attributes["pad"],
+            bias=("bias" in parameters),
+        )
+
+        # set parameters:
+        for key, value in parameters.items():
+            module.set_parameter(key, value)
+        return module
+
+
 class Conv2d(Module):
     r"""
     Module that performs 2D convolution.
@@ -1153,7 +1212,7 @@ class _Pool1d(Module):
             return MaxPool1d(*args, **kwargs)
         else:
             raise ValueError("Unknown pooling type: %s" % pool_type)
-        
+
 
 class MaxPool1d(_Pool1d):
     """

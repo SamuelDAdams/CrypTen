@@ -348,9 +348,16 @@ class CrypTensor(object):
         """Batch normalization."""
         raise NotImplementedError("batchnorm is not implemented")
 
+    def conv1d(self, *args, **kwargs):
+        """2D convolution."""
+        raise NotImplementedError("conv1d is not implemented")
+
     def conv2d(self, *args, **kwargs):
         """2D convolution."""
         raise NotImplementedError("conv2d is not implemented")
+
+    def max_pool1d(self, kernel_size, padding=None, stride=None, return_indices=False):
+        raise NotImplementedError("max_pool1d is not implemented")
 
     def max_pool2d(self, kernel_size, padding=None, stride=None, return_indices=False):
         """Applies a 2D max pooling over an input signal composed of several

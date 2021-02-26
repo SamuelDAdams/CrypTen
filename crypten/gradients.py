@@ -1216,6 +1216,17 @@ class AutogradMaxPool2D(AutogradFunction):
         )
 
 
+@register_function("conv1d")
+class AutogradConv1D(AutogradFunction):
+    @staticmethod
+    def forward(ctx, input, padding=0, stride=1):
+        input, kernel = input
+        assert isinstance(stride, (int, float))
+        assert isinstance(padding, (int, float))
+        ctx.save_multiple_for_backward((input, kernel, padding, stride))
+        return input.conv1d(kernel, padding=padding, stride=stride)
+
+
 @register_function("conv2d")
 class AutogradConv2D(AutogradFunction):
     @staticmethod
