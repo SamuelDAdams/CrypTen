@@ -195,6 +195,7 @@ class ArithmeticSharedTensor(CrypTensor):
             "sub",
             "mul",
             "matmul",
+            "conv1d",
             "conv2d",
             "conv_transpose2d",
         ], f"Provided op `{op}` is not a supported arithmetic function"

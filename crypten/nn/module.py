@@ -1121,6 +1121,55 @@ class LogSoftmax(Module):
         return LogSoftmax(attributes["axis"])
 
 
+class _Pool1d(Module):
+    def __init__(self, pool_type, kernel_size, stride=1, padding=0):
+        super().__init__()
+        self.pool_type = pool_type
+        self.kernel_size = kernel_size
+        self.padding = padding
+        self.stride = stride
+
+    def forward(self, x):
+        args = [self.kernel_size]
+        kwargs = {"stride": self.stride, "padding": self.padding}
+        if self.pool_type == "max":
+            return x.max_pool1d(*args, **kwargs)
+        else:
+            raise ValueError("Unknown pooling type: %s" % self.pool_type)
+
+    @staticmethod
+    def from_onnx(pool_type, parameters=None, attributes=None):
+
+        # check attributes:
+        if attributes is None:
+            attributes = {}
+        if "pads" not in attributes:
+            attributes["pads"] = [0]
+
+        # initialize module
+        args = [attributes["kernel_shape"][0]]
+        kwargs = {"stride": attributes["strides"][0], "padding": attributes["pads"][0]}
+        if pool_type == "max":
+            return MaxPool1d(*args, **kwargs)
+        else:
+            raise ValueError("Unknown pooling type: %s" % pool_type)
+        
+
+class MaxPool1d(_Pool1d):
+    """
+    Module that performs 1D max pooling
+    """
+
+    def __init__(self, kernel_size, stride=1, padding=0):
+        super().__init__("max", kernel_size, stride=stride, padding=padding)
+
+    @staticmethod
+    def from_onnx(parameters=None, attributes=None):
+        return super(MaxPool1d, MaxPool1d).from_onnx(
+            "max", parameters=parameters, attributes=attributes
+        )
+
+
 class _Pool2d(Module):
     """
     Module that performs 2D pooling.

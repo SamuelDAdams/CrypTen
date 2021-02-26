@@ -66,7 +66,7 @@ def pool_reshape1d(input, kernel_size, padding=None, stride=None, pad_value=0):
     return input, output_size
     
 
-def pool_reshape(input, kernel_size, padding=None, stride=None, pad_value=0):
+def pool_reshape2d(input, kernel_size, padding=None, stride=None, pad_value=0):
     """Rearrange a 4-d tensor so that each kernel is represented by each row"""
     # Setup kernel / stride values
     k = kernel_size
