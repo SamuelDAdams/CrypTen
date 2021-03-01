@@ -109,7 +109,8 @@ ONNX_TO_CRYPTEN = {
     "AveragePool": AvgPool2d,
     "BatchNormalization": _BatchNorm,
     "Concat": Concat,
-    "Conv": Conv2d,
+    "Conv1d": Conv1d,
+    "Conv2d": Conv2d,
     "Constant": Constant,
     "Dropout": Dropout,
     "Dropout2d": Dropout2d,
@@ -205,10 +206,20 @@ def from_onnx(onnx_string_or_file):
     # create graph by looping over nodes:
     crypten_model = Graph(input_names[0], output_names[0])
     for node in onnx_model.graph.node:
+        attributes = {attr.name: get_attribute_value(attr) for attr in node.attribute}
         # get operator type:
-        if node.op_type not in ONNX_TO_CRYPTEN:
+        op = node.op_type
+        if op == "Conv":
+            dims = len(attributes["kernel_shape"])
+            if dims == 1:
+                op = "Conv1d"
+            if dims == 2:
+                op = "Conv2d"
+
+        elif node.op_type not in ONNX_TO_CRYPTEN:
             raise ValueError("CrypTen does not support op %s." % node.op_type)
-        cls = ONNX_TO_CRYPTEN[node.op_type]
+
+        cls = ONNX_TO_CRYPTEN[op]
 
         # retrieve inputs, outputs, attributes, and parameters for this node:
         node_output_name = [name for name in node.output][0]
@@ -223,7 +234,7 @@ def from_onnx(onnx_string_or_file):
             for name in node_input_names
             if get_parameter_name(name) not in parameters
         ]
-        attributes = {attr.name: get_attribute_value(attr) for attr in node.attribute}
+        
 
         # add CrypTen module to graph:
         crypten_module = cls.from_onnx(parameters=parameters, attributes=attributes)

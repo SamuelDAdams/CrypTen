@@ -925,8 +925,8 @@ class Conv1d(Module):
             in_channels,
             out_channels,
             attributes["kernel_shape"],
-            stride=attributes["stride"],
-            padding=attributes["pad"],
+            stride=attributes["strides"],
+            padding=attributes["pads"],
             bias=("bias" in parameters),
         )
 

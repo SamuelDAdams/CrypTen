@@ -19,7 +19,7 @@ def __beaver_protocol(op, x, y, *args, **kwargs):
     3. Open ([epsilon] = [x] - [a]) and ([delta] = [y] - [b])
     4. Return [z] = [c] + (epsilon * [b]) + ([a] * delta) + (epsilon * delta)
     """
-    assert op in ["mul", "matmul", "conv2d", "conv_transpose2d"]
+    assert op in ["mul", "matmul", "conv1d", "conv2d", "conv_transpose2d"]
 
     provider = crypten.mpc.get_default_provider()
     a, b, c = provider.generate_additive_triple(x.size(), y.size(), op, *args, **kwargs)
@@ -50,6 +50,10 @@ def mul(x, y):
 
 def matmul(x, y):
     return __beaver_protocol("matmul", x, y)
+
+
+def conv1d(x, y, **kwargs):
+    return __beaver_protocol("conv1d", x, y, **kwargs)
 
 
 def conv2d(x, y, **kwargs):

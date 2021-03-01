@@ -386,6 +386,10 @@ class ArithmeticSharedTensor(CrypTensor):
         divisor = reduce(lambda x, y: x * y, size)
         return result.div(divisor)
 
+    def conv1d(self, kernel, **kwargs):
+        """Perform a 1D convolution using the given kernel"""
+        return self._arithmetic_function(kernel, "conv1d", **kwargs)
+
     def conv2d(self, kernel, **kwargs):
         """Perform a 2D convolution using the given kernel"""
         return self._arithmetic_function(kernel, "conv2d", **kwargs)

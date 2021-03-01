@@ -1221,10 +1221,16 @@ class AutogradConv1D(AutogradFunction):
     @staticmethod
     def forward(ctx, input, padding=0, stride=1):
         input, kernel = input
-        assert isinstance(stride, (int, float))
-        assert isinstance(padding, (int, float))
-        ctx.save_multiple_for_backward((input, kernel, padding, stride))
-        return input.conv1d(kernel, padding=padding, stride=stride)
+        new_stride = stride
+        new_padding = padding
+        if isinstance(new_stride, (tuple, list)):
+            new_stride = stride[0]
+        assert isinstance(new_stride, (int, float))
+        if isinstance(new_padding, (tuple, list)):
+            new_padding = padding[0]
+        assert isinstance(new_padding, (int, float))
+        ctx.save_multiple_for_backward((input, kernel, new_padding, new_stride))
+        return input.conv1d(kernel, padding=new_padding, stride=new_stride)
 
 
 @register_function("conv2d")
