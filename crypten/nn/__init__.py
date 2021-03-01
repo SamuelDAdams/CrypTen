@@ -37,6 +37,7 @@ from .module import (
     Graph,
     Linear,
     LogSoftmax,
+    MaxPool1d,
     MaxPool2d,
     Module,
     ReduceSum,
@@ -89,6 +90,7 @@ __all__ = [
     "Graph",
     "Linear",
     "LogSoftmax",
+    "MaxPool1d",
     "MaxPool2d",
     "Module",
     "_Pool2d",
@@ -122,7 +124,8 @@ ONNX_TO_CRYPTEN = {
     "Gemm": Linear,
     "GlobalAveragePool": GlobalAveragePool,
     "LogSoftmax": LogSoftmax,
-    "MaxPool": MaxPool2d,
+    "MaxPool1d": MaxPool1d,
+    "MaxPool2d": MaxPool2d,
     "Pad": _ConstantPad,
     "Relu": ReLU,
     "ReduceSum": ReduceSum,
@@ -215,6 +218,12 @@ def from_onnx(onnx_string_or_file):
                 op = "Conv1d"
             if dims == 2:
                 op = "Conv2d"
+        elif op == "MaxPool":
+            dims = len(attributes["kernel_shape"])
+            if dims == 1:
+                op = "MaxPool1d"
+            if dims == 2:
+                op = "MaxPool2d"
 
         elif node.op_type not in ONNX_TO_CRYPTEN:
             raise ValueError("CrypTen does not support op %s." % node.op_type)

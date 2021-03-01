@@ -1118,6 +1118,7 @@ OOP_BINARY_FUNCTIONS = {
     "sub": Ptype.arithmetic,
     "mul": Ptype.arithmetic,
     "matmul": Ptype.arithmetic,
+    "conv1d": Ptype.arithmetic,
     "conv2d": Ptype.arithmetic,
     "conv_transpose2d": Ptype.arithmetic,
     "dot": Ptype.arithmetic,
