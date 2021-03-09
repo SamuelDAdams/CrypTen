@@ -906,7 +906,7 @@ class Conv1d(Module):
     def forward(self, x):
         x = x.conv1d(self.weight, stride=self.stride, padding=self.padding)
         if hasattr(self, "bias"):
-            x = x.add(self.bias.unsqueeze(-1).unsqueeze(-1))  # unsure
+            x = x.add(self.bias.unsqueeze(-1))
         return x
 
     @staticmethod
