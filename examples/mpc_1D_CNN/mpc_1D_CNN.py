@@ -34,7 +34,7 @@ def run_mpc_1D_CNN(
     BOB = 1
 
     from nets import Net6
-    dummy_model = nets.Net6()
+    dummy_model = Net6()
 
     plaintext_model = crypten.load(CNN_pth, dummy_model=dummy_model, src=ALICE)
 
