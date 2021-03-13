@@ -653,6 +653,9 @@ class CrypTensor(object, metaclass=CrypTensorMetaclass):
         """2D convolution."""
         raise NotImplementedError("conv2d is not implemented")
 
+    def max_pool1d(self, kernel_size, padding=None, stride=None, return_indices=False):
+        raise NotImplementedError("max_pool1d is not implemented")
+
     def avg_pool2d(self, kernel_size, stride=None, padding=0):
         """Perform an average pooling on each 2D matrix of the given tensor
 

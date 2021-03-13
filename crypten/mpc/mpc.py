@@ -16,6 +16,7 @@ from crypten.common.tensor_types import is_tensor
 from crypten.common.util import (
     ConfigBase,
     adaptive_pool2d_helper,
+    pool1d_reshape,
     pool2d_reshape,
     torch_cat,
     torch_stack,
@@ -728,6 +729,27 @@ class MPCTensor(CrypTensor):
             return -result
         else:
             return -result[0], result[1]
+
+    @mode(Ptype.arithmetic)
+    def max_pool1d(self, kernel_size, padding=None, stride=None, return_indices=False):
+        max_input = self.shallow_copy()
+        max_input.share, output_size = pool1d_reshape(
+            self.share,
+            kernel_size,
+            padding=padding,
+            stride=stride,
+            # padding with extremely negative values to avoid choosing pads
+            # -2 ** 40 is acceptable since it is lower than the supported range
+            # which is -2 ** 32 because multiplication can otherwise fail.
+            pad_value=(-2 ** 40),
+        )
+        max_vals, argmax_vals = max_input.max(dim=-1, one_hot=True)
+        max_vals = max_vals.view(output_size)
+        if return_indices:
+            kernel_size = (kernel_size)
+            argmax_vals = argmax_vals.view(output_size + (kernel_size, ))
+            return max_vals, argmax_vals
+        return max_vals
 
     @mode(Ptype.arithmetic)
     def max_pool2d(

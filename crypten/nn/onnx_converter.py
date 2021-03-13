@@ -139,7 +139,6 @@ class FromOnnx:
         "BatchNormalization": module._BatchNorm,
         "Clip": module.Hardtanh,
         "Gemm": module.Linear,
-        "MaxPool": module.MaxPool2d,
         "Pad": module._ConstantPad,
         "Relu": module.ReLU,
         "ReduceMean": module.Mean,
@@ -321,6 +320,14 @@ class FromOnnx:
                 crypten_class = module.Conv1d
             elif dims == 2:
                 crypten_class = module.Conv2d
+            else:
+                raise ValueError("CrypTen does not support op Conv%dd." % dims)
+        elif node_op_type == "MaxPool":
+            dims = len(attributes["kernel_shape"])
+            if dims == 1:
+                crypten_class = module.MaxPool1d
+            elif dims == 2:
+                crypten_class = module.MaxPool2d
             else:
                 raise ValueError("CrypTen does not support op Conv%dd." % dims)
         else:

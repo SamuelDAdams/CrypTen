@@ -1292,6 +1292,40 @@ class AutogradPad(AutogradFunction):
         return grad_output
 
 
+@register_function("max_pool1d")
+class AutoGradMaxPool1D(AutogradFunction):
+    @staticmethod
+    def forward(ctx, input, padding=0, stride=None, return_indices=False):
+        input, kernel_size = input
+        if stride is None:
+            stride = kernel_size
+        if isinstance(stride, (int, float)):
+            stride = stride
+        if isinstance(padding, (int, float)):
+            padding = padding
+        output, indices = input.max_pool1d(kernel_size, padding=padding, stride=stride, return_indices=True)
+
+        ctx.save_multiple_for_backward(
+            (input.size(), indices, kernel_size, padding, stride)
+        )
+        if return_indices:
+            ctx.mark_non_differentiable(indices)
+            return output, indices
+        else:
+            return output
+
+    @staticmethod
+    def backward(ctx, grad_output):
+        output_size, indices, kernel_size, padding, stride = ctx.saved_tensors
+        return grad_output._max_pool1d_backward(
+            indices,
+            kernel_size,
+            padding=padding,
+            stride=stride,
+            output_size=output_size,
+        )
+
+
 @register_function("avg_pool2d")
 class AutogradAvgPool2D(AutogradFunction):
     @staticmethod
