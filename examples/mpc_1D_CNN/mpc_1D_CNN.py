@@ -46,6 +46,7 @@ def run_mpc_1D_CNN(
     private_model.eval()
 
     data_enc = crypten.load(data_pth, src=BOB)
+    count = 100
     input = data_enc[:count]
 
     classification = private_model(input[0])
