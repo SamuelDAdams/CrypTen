@@ -28,8 +28,15 @@ from examples.multiprocess_launcher import MultiProcessLauncher
 
 parser = argparse.ArgumentParser(description="CrypTen Linear SVM Training")
 parser.add_argument(
-    "--world_size",
-    type=int,
+    "--CNN_Path",
+    type=String,
+    default=2,
+    help="The number of parties to launch. Each party acts as its own process",
+)
+
+parser.add_argument(
+    "--Data_Path",
+    type=String,
     default=2,
     help="The number of parties to launch. Each party acts as its own process",
 )
@@ -75,7 +82,7 @@ def _run_experiment(args):
     from mpc_1D_CNN import run_mpc_1D_CNN
 
     run_mpc_1D_CNN(
-        args.epochs, args.examples, args.features, args.lr, args.skip_plaintext
+        args.Data_Path, args.CNN_Path
     )
 
 
