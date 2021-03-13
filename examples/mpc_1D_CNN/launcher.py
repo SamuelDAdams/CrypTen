@@ -74,7 +74,7 @@ def _run_experiment(args):
     )
     from mpc_1D_CNN import run_mpc_1D_CNN
 
-    run_mpc_linear_svm(
+    run_mpc_1D_CNN(
         args.epochs, args.examples, args.features, args.lr, args.skip_plaintext
     )
 
