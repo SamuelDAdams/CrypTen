@@ -28,40 +28,26 @@ from examples.multiprocess_launcher import MultiProcessLauncher
 
 parser = argparse.ArgumentParser(description="CrypTen Linear SVM Training")
 parser.add_argument(
-    "--CNN_Path",
-    type=String,
+    "--world_size",
+    type=str,
     default=2,
     help="The number of parties to launch. Each party acts as its own process",
 )
 
 parser.add_argument(
-    "--Data_Path",
-    type=String,
-    default=2,
+    "--CNN_path",
+    type=str,
+    default="../train/checkpoint.pth",
     help="The number of parties to launch. Each party acts as its own process",
 )
+
 parser.add_argument(
-    "--epochs", default=50, type=int, metavar="N", help="number of total epochs to run"
-)
-parser.add_argument(
-    "--examples", default=50, type=int, metavar="N", help="number of examples per epoch"
-)
-parser.add_argument(
-    "--features",
-    default=100,
+    "--data_path",
     type=int,
-    metavar="N",
-    help="number of features per example",
+    default="../test/embedings_tensor.pth",
+    help="The number of parties to launch. Each party acts as its own process",
 )
-parser.add_argument(
-    "--lr", "--learning-rate", default=0.5, type=float, help="initial learning rate"
-)
-parser.add_argument(
-    "--skip_plaintext",
-    default=False,
-    action="store_true",
-    help="skip evaluation for plaintext svm",
-)
+
 parser.add_argument(
     "--multiprocess",
     default=False,
@@ -82,7 +68,7 @@ def _run_experiment(args):
     from mpc_1D_CNN import run_mpc_1D_CNN
 
     run_mpc_1D_CNN(
-        args.Data_Path, args.CNN_Path
+        args.CNN_path, args.data_path
     )
 
 
