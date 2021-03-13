@@ -72,7 +72,7 @@ def _run_experiment(args):
         level=level,
         format="%(asctime)s - %(process)d - %(name)s - %(levelname)s - %(message)s",
     )
-    from mpc_1D_CNN import run_mpc_linear_svm
+    from mpc_1D_CNN import run_mpc_1D_CNN
 
     run_mpc_linear_svm(
         args.epochs, args.examples, args.features, args.lr, args.skip_plaintext
