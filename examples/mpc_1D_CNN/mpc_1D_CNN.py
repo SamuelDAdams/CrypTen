@@ -14,7 +14,6 @@ import crypten
 import torch
 
 from examples.meters import AverageMeter
-from examples.mpc_autograd_cnn.mpc_autograd_cnn import CNN
 
 
 def train_1D_CNN(features, labels, epochs=50, lr=0.5, print_time=False):
