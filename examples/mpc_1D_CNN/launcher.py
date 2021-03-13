@@ -43,7 +43,7 @@ parser.add_argument(
 
 parser.add_argument(
     "--data_path",
-    type=int,
+    type=str,
     default="../test/embedings_tensor.pth",
     help="The number of parties to launch. Each party acts as its own process",
 )
