@@ -72,7 +72,7 @@ def run_mpc_1D_CNN(
 
         for i in range(count):
             print(i)
-            classification = argmax(private_model(input[i]), one_hot=False)
+            classification = torch.argmax(private_model(input[i]), one_hot=False)
             if rank == BOB:
                 if classification == labels[i]:
                     correctly_classified += 1
