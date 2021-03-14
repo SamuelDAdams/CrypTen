@@ -66,7 +66,6 @@ parser.add_argument(
     "--count",
     type=int,
     default=0,
-    action="store_true",
     help="Run example in multiprocess mode",
 )
 
