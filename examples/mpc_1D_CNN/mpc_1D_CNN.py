@@ -83,5 +83,5 @@ def run_mpc_1D_CNN(
 
     end = datetime.datetime.now()
     #print(str(correctly_classified / incorrectly_classified))
-    print("count = " + str(count) + ", " + str(((end - start).total_seconds() * 1000)//1) + "ms")
+    print(str(count) + ", " + str(((end - start).total_seconds() * 1000)//1) + "ms")
 
