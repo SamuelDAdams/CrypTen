@@ -98,5 +98,8 @@ def run_mpc_1D_CNN(
 
         total_time += time_in_ms
 
+        print(total_time)
+
+    print(total_time/number_of_tests)
     #print(str(correctly_classified / incorrectly_classified))
     print("batch = " + str(batch) + ", " + str(count) + ", " + str(int(total_time/number_of_tests)) + "ms")
