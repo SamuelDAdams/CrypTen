@@ -31,6 +31,9 @@ def run_mpc_1D_CNN(
 ):
     crypten.init()
 
+    if batch == 1:
+        batch = True
+
     ALICE = 0
     BOB = 1
 

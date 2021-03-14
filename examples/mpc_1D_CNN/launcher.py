@@ -64,8 +64,8 @@ parser.add_argument(
 
 parser.add_argument(
     "--batch",
-    default=False,
-    action="store_true",
+    type=int,
+    default=0,
     help="Run example in multiprocess mode",
 )
 
