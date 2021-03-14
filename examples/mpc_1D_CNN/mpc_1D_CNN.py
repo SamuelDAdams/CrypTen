@@ -36,8 +36,6 @@ def run_mpc_1D_CNN(
 
     rank = comm.get().get_rank()
 
-    start = datetime.datetime.now()
-
     from nets import Net6
     dummy_model = Net6()
 
@@ -64,31 +62,26 @@ def run_mpc_1D_CNN(
     correctly_classified = 0
     incorrectly_classified = 0
 
-    if batch:
-        classification = argmax(private_model(input))
+    start = datetime.datetime.now()
 
+    if batch:
+        classification = private_model(input)
     else:
         for i in range(count):
-
-            print(i)
-
+            #print(i)
             classify = private_model(input[i])
-            classify = classify.get_plain_text()
+            #classify = classify.get_plain_text()
 
-            if rank == BOB:
-                classification = torch.argmax(classify)
-                # print(classification)
-                # print(labels[i])
-                if classification == labels[i]:
-                    correctly_classified += 1
-                else:
-                    incorrectly_classified += 1
-
-
-    print("correct:" + str(correctly_classified))
-    print("incorrect:" + str(incorrectly_classified))
+            # if rank == BOB:
+            #     classification = torch.argmax(classify)
+            #     # print(classification)
+            #     # print(labels[i])
+            #     if classification == labels[i]:
+            #         correctly_classified += 1
+            #     else:
+            #         incorrectly_classified += 1
 
     end = datetime.datetime.now()
-    print(str(end - start) + "ms")
+    #print(str(correctly_classified / incorrectly_classified))
+    print("count = " + count + ", " + str((start - end).total_seconds() * 1000) + "ms")
 
-    print('done')
