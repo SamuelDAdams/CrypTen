@@ -37,7 +37,7 @@ parser.add_argument(
 parser.add_argument(
     "--CNN_path",
     type=str,
-    default="../train/checkpoint.pth",
+    default="../checkpoint.pth",
     help="The number of parties to launch. Each party acts as its own process",
 )
 
@@ -51,7 +51,7 @@ parser.add_argument(
 parser.add_argument(
     "--data_path",
     type=str,
-    default="../test/embedings_tensor.pth",
+    default="../test/embeddings_tensor.pth",
     help="The number of parties to launch. Each party acts as its own process",
 )
 
