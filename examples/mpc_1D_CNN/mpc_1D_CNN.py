@@ -69,12 +69,13 @@ def run_mpc_1D_CNN(
     else:
         for i in range(count):
 
+            print(i)
+
             classify = private_model(input[i])
-            end = time.time()
             classify = classify.get_plain_text()
 
-            classification = torch.argmax(classify)
             if rank == BOB:
+                classification = torch.argmax(classify)
                 if classification == labels[i]:
                     correctly_classified += 1
                 else:
@@ -84,6 +85,7 @@ def run_mpc_1D_CNN(
     print("correct:" + str(correctly_classified))
     print("incorrect:" + str(incorrectly_classified))
 
+    end = time.time()
     print(str(end - start) + "ms")
 
     print('done')
