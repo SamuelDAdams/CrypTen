@@ -67,13 +67,13 @@ def run_mpc_1D_CNN(
     correctly_classified = 0
     incorrectly_classified = 0
 
-    start = datetime.datetime.now()
-
     number_of_tests = 5
 
     total_time = 0
 
     for i in range(number_of_tests):
+
+        start = datetime.datetime.now()
 
         if batch:
             classification = private_model(input)
