@@ -33,6 +33,8 @@ def run_mpc_1D_CNN(
 
     if batch == 1:
         batch = True
+    else:
+        batch = False
 
     ALICE = 0
     BOB = 1
