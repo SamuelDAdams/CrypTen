@@ -64,7 +64,7 @@ def run_mpc_1D_CNN(
     incorrectly_classified = 0
 
     if batch:
-        classification = crypten.CrypTensor.argmax(private_model(input))
+        classification = argmax(private_model(input))
 
 
 
@@ -72,7 +72,7 @@ def run_mpc_1D_CNN(
 
         for i in range(count):
             print(i)
-            classification = crypten.CrypTensor.argmax(private_model(input[i]), one_hot=False)
+            classification = argmax(private_model(input[i]), one_hot=False)
             if rank == BOB:
                 if classification == labels[i]:
                     correctly_classified += 1
