@@ -8,7 +8,7 @@
 import logging
 import time
 
-import crypten.communicator as comms
+import crypten.communicator as comm
 
 import crypten
 import torch
