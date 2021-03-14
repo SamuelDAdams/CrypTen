@@ -69,23 +69,34 @@ def run_mpc_1D_CNN(
 
     start = datetime.datetime.now()
 
-    if batch:
-        classification = private_model(input)
-    else:
-        for i in range(count):
-            #print(i)
-            classify = private_model(input[i])
-            #classify = classify.get_plain_text()
+    number_of_tests = 5
 
-            # if rank == BOB:
-            #     classification = torch.argmax(classify)
-            #     # print(classification)
-            #     # print(labels[i])
-            #     if classification == labels[i]:
-            #         correctly_classified += 1
-            #     else:
-            #         incorrectly_classified += 1
+    total_time = 0
 
-    end = datetime.datetime.now()
+    for i in range(number_of_tests):
+
+        if batch:
+            classification = private_model(input)
+        else:
+            for i in range(count):
+                #print(i)
+                classify = private_model(input[i])
+                #classify = classify.get_plain_text()
+
+                # if rank == BOB:
+                #     classification = torch.argmax(classify)
+                #     # print(classification)
+                #     # print(labels[i])
+                #     if classification == labels[i]:
+                #         correctly_classified += 1
+                #     else:
+                #         incorrectly_classified += 1
+
+        end = datetime.datetime.now()
+
+        time_in_ms = (end - start).total_seconds() * 1000
+
+        total_time += time_in_ms
+
     #print(str(correctly_classified / incorrectly_classified))
-    print("batch = " + str(batch) + ", " + str(count) + ", " + str(int((end - start).total_seconds() * 1000)) + "ms")
+    print("batch = " + str(batch) + ", " + str(count) + ", " + str(int(total_time/number_of_tests)) + "ms")
