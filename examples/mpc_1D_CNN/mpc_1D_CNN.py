@@ -35,7 +35,7 @@ def run_mpc_1D_CNN(
 
     rank = comm.get().get_rank()
 
-    start = time.time()
+    start = datetime.datetime.now()
 
     from nets import Net6
     dummy_model = Net6()
@@ -87,7 +87,7 @@ def run_mpc_1D_CNN(
     print("correct:" + str(correctly_classified))
     print("incorrect:" + str(incorrectly_classified))
 
-    end = time.time()
+    end = datetime.datetime.now()
     print(str(end - start) + "ms")
 
     print('done')
