@@ -76,8 +76,8 @@ def run_mpc_1D_CNN(
 
             if rank == BOB:
                 classification = torch.argmax(classify)
-                print(classification)
-                print(labels)
+                # print(classification)
+                # print(labels[i])
                 if classification == labels[i]:
                     correctly_classified += 1
                 else:
