@@ -55,6 +55,21 @@ parser.add_argument(
     help="Run example in multiprocess mode",
 )
 
+parser.add_argument(
+    "--batch",
+    default=False,
+    action="store_true",
+    help="Run example in multiprocess mode",
+)
+
+parser.add_argument(
+    "--count",
+    type=int,
+    default=0,
+    action="store_true",
+    help="Run example in multiprocess mode",
+)
+
 
 def _run_experiment(args):
     level = logging.INFO

@@ -20,18 +20,22 @@ def train_1D_CNN(features, labels, epochs=50, lr=0.5, print_time=False):
     return
 
 
-
 def evaluate_1D_CNN(features, labels, w, b):
     return
 
 
 def run_mpc_1D_CNN(
-    CNN_pth="../train/checkpoint.pth", data_pth = "../test/embedings_tensor.pth"
+    CNN_pth="../checkpoint.pth", data_pth = "../test/embeddings_tensor.pth", label_pth="../test/bin_labels_tensor.pth",
+    count = 0, batch = false
 ):
     crypten.init()
 
     ALICE = 0
     BOB = 1
+
+    rank = comm.get().get_rank()
+
+    start = time.time()
 
     from nets import Net6
     dummy_model = Net6()
@@ -46,9 +50,40 @@ def run_mpc_1D_CNN(
     private_model.eval()
 
     data_enc = crypten.load(data_pth, src=BOB)
-    count = 100
+
+    labels = None
+    if rank == BOB:
+        labels = torch.load(label_pth)
+
+    if count == 0:
+        count = len(data_enc)
+
     input = data_enc[:count]
 
-    classification = private_model(input[0])
-    print(classification.get_plain_text())
+    correctly_classified = 0
+    incorrectly_classified = 0
+
+    if batch:
+        classification = crypten.CrypTensor.argmax(private_model(input))
+
+
+
+    else:
+
+        for i in range(count):
+            classification = crypten.CrypTensor.argmax(private_model(input), one_hot=False)
+            if rank == BOB:
+                if classification == labels[i]:
+                    correctly_classified += 1
+                else:
+                    incorrectly_classified += 1
+
+
+    end = time.time()
+
+    print("correct:" + str(correctly_classified))
+    print("incorrect:" + str(incorrectly_classified))
+
+    print(str(end - start) + "ms")
+
     print('done')
