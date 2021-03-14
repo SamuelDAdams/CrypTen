@@ -6,9 +6,10 @@
 # LICENSE file in the root directory of this source tree.
 
 import logging
-import time
 
 import crypten.communicator as comm
+
+import datetime
 
 import crypten
 import torch
