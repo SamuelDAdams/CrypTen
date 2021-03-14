@@ -26,7 +26,7 @@ def evaluate_1D_CNN(features, labels, w, b):
 
 def run_mpc_1D_CNN(
     CNN_pth="../checkpoint.pth", data_pth = "../test/embeddings_tensor.pth", label_pth="../test/bin_labels_tensor.pth",
-    count = 0, batch = false
+    count = 0, batch = False
 ):
     crypten.init()
 
