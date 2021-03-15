@@ -77,7 +77,7 @@ def run_mpc_1D_CNN(
 
         if batch:
             classification = private_model(input).sigmoid()
-            classificaitons = classification.data
+            classificaitons = classification.get(0)
             print(classificaitons.get_plain_text())
 
         else:
