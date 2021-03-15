@@ -170,5 +170,5 @@ class Net6(nn.Module):
         x = torch.cat([x0, x1, x2], dim=-1)
         x = x.view(len(batch), -1)
         x = self.dropout(x)
-        logits = torch.softmax(self.lin(x))
+        logits = torch.softmax(self.lin(x), dim=-1)
         return logits
