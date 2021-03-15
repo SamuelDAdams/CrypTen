@@ -77,6 +77,8 @@ def run_mpc_1D_CNN(
 
         if batch:
             classifications = private_model(input)
+            print(classifications)
+            print(classifications.get_plain_text())
             geq_cmps = classifications[0] >= classifications[1]
             print(geq_cmps.get_plain_text())
 
