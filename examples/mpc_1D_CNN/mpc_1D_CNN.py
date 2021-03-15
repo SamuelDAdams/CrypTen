@@ -77,9 +77,7 @@ def run_mpc_1D_CNN(
 
         if batch:
             classifications = private_model(input).sigmoid()
-            print(classifications)
-            print(classifications.get_plain_text())
-            classificaitons = classification.argmax()
+            classificaitons = classification.data
             print(classificaitons.get_plain_text())
 
         else:
@@ -89,7 +87,6 @@ def run_mpc_1D_CNN(
                 print(classify)
                 print(classify.get_plain_text())
                 classificaiton = classify.argmax()
-                print(classificaiton.get_plain_text())
                 #classify = classify.get_plain_text()
 
                 # if rank == BOB:
