@@ -86,6 +86,8 @@ def run_mpc_1D_CNN(
             for i in range(count):
                 #print(i)
                 classify = private_model(input[i]).sigmoid()
+                print(classify)
+                print(classify.get_plain_text())
                 geq = classify[0] >= classify[1]
                 classification = geq * classify[0] + (1 - geq) * classify[1]
                 #classify = classify.get_plain_text()
