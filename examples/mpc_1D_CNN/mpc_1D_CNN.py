@@ -79,8 +79,8 @@ def run_mpc_1D_CNN(
             classifications = private_model(input).sigmoid()
             print(classifications)
             print(classifications.get_plain_text())
-            geq_cmps = classifications[0] >= classifications[1]
-            print(geq_cmps.get_plain_text())
+            classificaitons = classification.argmax()
+            print(classificaitons.get_plain_text())
 
         else:
             for i in range(count):
@@ -88,8 +88,8 @@ def run_mpc_1D_CNN(
                 classify = private_model(input[i]).sigmoid()
                 print(classify)
                 print(classify.get_plain_text())
-                geq = classify[0] >= classify[1]
-                classification = geq * classify[0] + (1 - geq) * classify[1]
+                classificaiton = classify.argmax()
+                print(classificaiton.get_plain_text())
                 #classify = classify.get_plain_text()
 
                 # if rank == BOB:
