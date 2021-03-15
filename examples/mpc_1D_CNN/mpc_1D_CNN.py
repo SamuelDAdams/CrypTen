@@ -77,17 +77,12 @@ def run_mpc_1D_CNN(
 
         if batch:
             classification = private_model(input).sigmoid()
-            classificaitons = classification.get(0)
-            print(classificaitons.get_plain_text())
+            classificaitons = argmax(dim=2)
 
         else:
             for i in range(count):
-                #print(i)
                 classify = private_model(input[i]).sigmoid()
-                print(classify)
-                print(classify.get_plain_text())
                 classificaiton = classify.argmax()
-                #classify = classify.get_plain_text()
 
                 # if rank == BOB:
                 #     classification = torch.argmax(classify)
