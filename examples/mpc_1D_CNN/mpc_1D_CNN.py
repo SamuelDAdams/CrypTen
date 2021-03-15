@@ -81,6 +81,7 @@ def run_mpc_1D_CNN(
             for i in range(count):
                 #print(i)
                 classify = private_model(input[i])
+                classification = classify.argmax()
                 #classify = classify.get_plain_text()
 
                 # if rank == BOB:
