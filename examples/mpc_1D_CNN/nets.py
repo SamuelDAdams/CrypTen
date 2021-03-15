@@ -156,7 +156,6 @@ class Net6(nn.Module):
                                    nn.Conv1d(in_channels=channels2, out_channels=channels3, kernel_size=kernels3[2]),
                                    nn.ReLU(), nn.MaxPool1d(5))
 
-        self.sig = nn.Sigmoid()
         self.dropout = nn.Dropout(dropout)
         self.lin = nn.Sequential(
             nn.Linear(204, 32),
@@ -171,5 +170,5 @@ class Net6(nn.Module):
         x = torch.cat([x0, x1, x2], dim=-1)
         x = x.view(len(batch), -1)
         x = self.dropout(x)
-        logits = self.sig(self.lin(x))
+        logits = self.lin(x)
         return logits
